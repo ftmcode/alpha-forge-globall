@@ -2,136 +2,44 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>MyIdolo App</title>
-
-<style>
-body {
-  margin: 0;
-  font-family: Arial;
-  background: #f7f4ee;
-  color: #1f2a37;
-}
-
-/* HEADER */
-header {
-  background: linear-gradient(90deg, #3aa0ff, #00c2ff);
-  padding: 20px;
-  text-align: center;
-  color: white;
-  font-size: 22px;
-  font-weight: bold;
-}
-
-/* CONTAINER */
-.container {
-  max-width: 900px;
-  margin: auto;
-  padding: 20px;
-}
-
-/* SEARCH */
-.search-box {
-  display: flex;
-  gap: 10px;
-}
-
-input {
-  flex: 1;
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid #ddd;
-}
-
-button {
-  padding: 12px 18px;
-  background: #3aa0ff;
-  border: none;
-  border-radius: 10px;
-  color: white;
-  cursor: pointer;
-}
-
-/* LIVE BADGE */
-.badge {
-  display: inline-block;
-  padding: 5px 10px;
-  background: #00c2ff;
-  color: white;
-  border-radius: 20px;
-  font-size: 12px;
-  margin-top: 10px;
-}
-
-/* CARDS */
-.card {
-  background: white;
-  padding: 15px;
-  margin-top: 20px;
-  border-radius: 12px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-}
-
-/* GRID */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-}
-
-.stat {
-  background: #f2f6ff;
-  padding: 15px;
-  border-radius: 10px;
-}
-
-/* TRENDING */
-.trending {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.tag {
-  background: #3aa0ff;
-  color: white;
-  padding: 8px 12px;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 13px;
-}
-
-footer {
-  text-align: center;
-  margin-top: 30px;
-  color: #777;
-}
-</style>
+<title>MyIdolo AI Dashboard</title>
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
 <header>
-🚀 MyIdolo App
+ MyIdolo AI Analytics Dashboard
 </header>
 
-<div class="container">
+<div class="layout">
 
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <h3>Categories</h3>
+  <button onclick="filter('tech')">Tech</button>
+  <button onclick="filter('sports')">Sports</button>
+  <button onclick="filter('orgs')">Organizations</button>
+  <button onclick="filter('crypto')">Web3</button>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+<!-- STATS -->
+<div class="stats">
+  <div class="box">Total Profiles: 12</div>
+  <div class="box">Avg Followers: 180M</div>
+  <div class="box">Engagement: High 🔥</div>
+</div>
+
+<!-- SEARCH -->
 <div class="search-box">
-  <input id="input" placeholder="Search X user e.g. elonmusk">
+  <input id="input" placeholder="Search X username...">
   <button onclick="search()">Search</button>
 </div>
 
-<div class="badge">🔴 Live Mock Data</div>
-
-<!-- TRENDING -->
-<div class="card">
-  <h3>🔥 Trending Idols</h3>
-  <div class="trending">
-    <div class="tag" onclick="quick('elonmusk')">Elon Musk</div>
-    <div class="tag" onclick="quick('cristiano')">Cristiano</div>
-    <div class="tag" onclick="quick('nasa')">NASA</div>
-  </div>
-</div>
+<div class="badge">Live Mock Analytics System</div>
 
 <!-- RESULT -->
 <div id="result" class="card" style="display:none;">
@@ -142,36 +50,48 @@ footer {
     <div class="stat">Followers: <span id="followers"></span></div>
     <div class="stat">Following: <span id="following"></span></div>
     <div class="stat">Posts: <span id="posts"></span></div>
-    <div class="stat">Engagement: 🔥 High</div>
+    <div class="stat">Growth: 🔺 +12%</div>
   </div>
-
-  <button onclick="save()">⭐ Save Idol</button>
 </div>
 
-<!-- SAVED -->
+<!-- LIST -->
 <div class="card">
-  <h3>💾 Saved Idols</h3>
-  <ul id="saved"></ul>
+  <h3>🔥 Directory</h3>
+  <ul id="list"></ul>
 </div>
 
 </div>
-
-<footer>
-MyIdolo App • Alpha Forge Global
-</footer>
+</div>
 
 <script>
 const data = {
-  elonmusk: {name:"Elon Musk", handle:"@elonmusk", followers:"180M", following:"500", posts:"25K"},
-  cristiano: {name:"Cristiano Ronaldo", handle:"@cristiano", followers:"620M", following:"600", posts:"3.5K"},
-  nasa: {name:"NASA", handle:"@nasa", followers:"95M", following:"100", posts:"80K"}
+  // tech
+  elonmusk:{name:"Elon Musk",handle:"@elonmusk",followers:"180M",following:"500",posts:"25K",cat:"tech"},
+  zuck:{name:"Mark Zuckerberg",handle:"@zuck",followers:"120M",following:"300",posts:"5K",cat:"tech"},
+  gates:{name:"Bill Gates",handle:"@billgates",followers:"110M",following:"200",posts:"3K",cat:"tech"},
+
+  // sports
+  cristiano:{name:"Cristiano Ronaldo",handle:"@cristiano",followers:"620M",following:"600",posts:"3.5K",cat:"sports"},
+  messi:{name:"Lionel Messi",handle:"@leomessi",followers:"500M",following:"400",posts:"2K",cat:"sports"},
+
+  // orgs
+  nasa:{name:"NASA",handle:"@nasa",followers:"95M",following:"100",posts:"80K",cat:"orgs"},
+  who:{name:"WHO",handle:"@who",followers:"40M",following:"80",posts:"20K",cat:"orgs"},
+
+  // crypto
+  vitalik:{name:"Vitalik Buterin",handle:"@VitalikButerin",followers:"5M",following:"50",posts:"1K",cat:"crypto"},
 };
 
 let current = null;
 
 function search(){
   const val = document.getElementById("input").value.toLowerCase();
-  current = data[val] || {name:"Unknown", handle:"@"+val, followers:"N/A", following:"N/A", posts:"N/A"};
+  current = data[val];
+
+  if(!current){
+    alert("Not found in system");
+    return;
+  }
 
   document.getElementById("result").style.display="block";
   document.getElementById("name").innerText=current.name;
@@ -181,24 +101,11 @@ function search(){
   document.getElementById("posts").innerText=current.posts;
 }
 
-function quick(name){
-  document.getElementById("input").value=name;
-  search();
+function filter(cat){
+  let list = Object.values(data).filter(i=>i.cat===cat);
+  document.getElementById("list").innerHTML =
+    list.map(i=>"<li>"+i.name+" "+i.handle+"</li>").join("");
 }
-
-function save(){
-  let list = JSON.parse(localStorage.getItem("saved") || "[]");
-  list.push(current.name);
-  localStorage.setItem("saved", JSON.stringify(list));
-  renderSaved();
-}
-
-function renderSaved(){
-  let list = JSON.parse(localStorage.getItem("saved") || "[]");
-  document.getElementById("saved").innerHTML = list.map(i=>"<li>"+i+"</li>").join("");
-}
-
-renderSaved();
 </script>
 
 </body>
