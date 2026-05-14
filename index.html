@@ -1,13 +1,121 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
   <title>Alpha Forge Global</title>
-  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background: #1e293b;
+      padding: 20px;
+      border-radius: 12px;
+    }
+
+    h1 {
+      color: #00ffcc;
+    }
+
+    .coin {
+      margin: 15px 0;
+      padding: 10px;
+      background: #334155;
+      border-radius: 8px;
+    }
+
+    .refresh-btn {
+      padding: 10px 15px;
+      background: #00ffcc;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .refresh-btn:hover {
+      background: #00ccaa;
+    }
+
+    #lastUpdated {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #aaa;
+    }
+
+    footer {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #888;
+    }
+  </style>
 </head>
 <body>
 
-  <h1>🚀 Alpha Forge Global</h1>
-  <p>My first deployed project</p>
+  <div class="container">
+
+    <h1>🚀 Alpha Forge Global</h1>
+    <p>My First Deployed Project</p>
+
+    <h2>Crypto Price Tracker</h2>
+
+    <div class="coin">
+      <h3>Bitcoin</h3>
+      <p id="btc">Loading...</p>
+    </div>
+
+    <div class="coin">
+      <h3>Ethereum</h3>
+      <p id="eth">Loading...</p>
+    </div>
+
+    <div class="coin">
+      <h3>Solana</h3>
+      <p id="sol">Loading...</p>
+    </div>
+
+    <button onclick="fetchPrices()" class="refresh-btn">🔄 Refresh</button>
+
+    <p id="lastUpdated"></p>
+
+  </div>
+
+  <footer>
+    Built by Alpha Forge Global
+  </footer>
+
+  <script>
+    async function fetchPrices() {
+      const url = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana&vs_currencies=usd";
+
+      document.getElementById("lastUpdated").innerText = "Updating...";
+
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        document.getElementById("btc").innerText = "$" + data.bitcoin.usd;
+        document.getElementById("eth").innerText = "$" + data.ethereum.usd;
+        document.getElementById("sol").innerText = "$" + data.solana.usd;
+
+        const time = new Date().toLocaleTimeString();
+        document.getElementById("lastUpdated").innerText = "Last updated: " + time;
+
+      } catch (error) {
+        document.getElementById("lastUpdated").innerText = "Error fetching data";
+      }
+    }
+
+    fetchPrices();
+  </script>
 
 </body>
 </html>
