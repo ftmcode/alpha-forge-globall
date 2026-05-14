@@ -1,121 +1,205 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Alpha Forge Global</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #0f172a;
-      color: white;
-      text-align: center;
-      padding: 20px;
-    }
+<meta charset="UTF-8">
+<title>MyIdolo App</title>
 
-    .container {
-      max-width: 500px;
-      margin: auto;
-      background: #1e293b;
-      padding: 20px;
-      border-radius: 12px;
-    }
+<style>
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #f7f4ee;
+  color: #1f2a37;
+}
 
-    h1 {
-      color: #00ffcc;
-    }
+/* HEADER */
+header {
+  background: linear-gradient(90deg, #3aa0ff, #00c2ff);
+  padding: 20px;
+  text-align: center;
+  color: white;
+  font-size: 22px;
+  font-weight: bold;
+}
 
-    .coin {
-      margin: 15px 0;
-      padding: 10px;
-      background: #334155;
-      border-radius: 8px;
-    }
+/* CONTAINER */
+.container {
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+}
 
-    .refresh-btn {
-      padding: 10px 15px;
-      background: #00ffcc;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: bold;
-      margin-top: 10px;
-    }
+/* SEARCH */
+.search-box {
+  display: flex;
+  gap: 10px;
+}
 
-    .refresh-btn:hover {
-      background: #00ccaa;
-    }
+input {
+  flex: 1;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
 
-    #lastUpdated {
-      margin-top: 10px;
-      font-size: 14px;
-      color: #aaa;
-    }
+button {
+  padding: 12px 18px;
+  background: #3aa0ff;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+}
 
-    footer {
-      margin-top: 20px;
-      font-size: 14px;
-      color: #888;
-    }
-  </style>
+/* LIVE BADGE */
+.badge {
+  display: inline-block;
+  padding: 5px 10px;
+  background: #00c2ff;
+  color: white;
+  border-radius: 20px;
+  font-size: 12px;
+  margin-top: 10px;
+}
+
+/* CARDS */
+.card {
+  background: white;
+  padding: 15px;
+  margin-top: 20px;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+/* GRID */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.stat {
+  background: #f2f6ff;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+/* TRENDING */
+.trending {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.tag {
+  background: #3aa0ff;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+footer {
+  text-align: center;
+  margin-top: 30px;
+  color: #777;
+}
+</style>
 </head>
+
 <body>
 
-  <div class="container">
+<header>
+🚀 MyIdolo App
+</header>
 
-    <h1>🚀 Alpha Forge Global</h1>
-    <p>My First Deployed Project</p>
+<div class="container">
 
-    <h2>Crypto Price Tracker</h2>
+<div class="search-box">
+  <input id="input" placeholder="Search X user e.g. elonmusk">
+  <button onclick="search()">Search</button>
+</div>
 
-    <div class="coin">
-      <h3>Bitcoin</h3>
-      <p id="btc">Loading...</p>
-    </div>
+<div class="badge">🔴 Live Mock Data</div>
 
-    <div class="coin">
-      <h3>Ethereum</h3>
-      <p id="eth">Loading...</p>
-    </div>
+<!-- TRENDING -->
+<div class="card">
+  <h3>🔥 Trending Idols</h3>
+  <div class="trending">
+    <div class="tag" onclick="quick('elonmusk')">Elon Musk</div>
+    <div class="tag" onclick="quick('cristiano')">Cristiano</div>
+    <div class="tag" onclick="quick('nasa')">NASA</div>
+  </div>
+</div>
 
-    <div class="coin">
-      <h3>Solana</h3>
-      <p id="sol">Loading...</p>
-    </div>
+<!-- RESULT -->
+<div id="result" class="card" style="display:none;">
+  <h2 id="name"></h2>
+  <p id="handle"></p>
 
-    <button onclick="fetchPrices()" class="refresh-btn">🔄 Refresh</button>
-
-    <p id="lastUpdated"></p>
-
+  <div class="grid">
+    <div class="stat">Followers: <span id="followers"></span></div>
+    <div class="stat">Following: <span id="following"></span></div>
+    <div class="stat">Posts: <span id="posts"></span></div>
+    <div class="stat">Engagement: 🔥 High</div>
   </div>
 
-  <footer>
-    Built by Alpha Forge Global
-  </footer>
+  <button onclick="save()">⭐ Save Idol</button>
+</div>
 
-  <script>
-    async function fetchPrices() {
-      const url = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana&vs_currencies=usd";
+<!-- SAVED -->
+<div class="card">
+  <h3>💾 Saved Idols</h3>
+  <ul id="saved"></ul>
+</div>
 
-      document.getElementById("lastUpdated").innerText = "Updating...";
+</div>
 
-      try {
-        const response = await fetch(url);
-        const data = await response.json();
+<footer>
+MyIdolo App • Alpha Forge Global
+</footer>
 
-        document.getElementById("btc").innerText = "$" + data.bitcoin.usd;
-        document.getElementById("eth").innerText = "$" + data.ethereum.usd;
-        document.getElementById("sol").innerText = "$" + data.solana.usd;
+<script>
+const data = {
+  elonmusk: {name:"Elon Musk", handle:"@elonmusk", followers:"180M", following:"500", posts:"25K"},
+  cristiano: {name:"Cristiano Ronaldo", handle:"@cristiano", followers:"620M", following:"600", posts:"3.5K"},
+  nasa: {name:"NASA", handle:"@nasa", followers:"95M", following:"100", posts:"80K"}
+};
 
-        const time = new Date().toLocaleTimeString();
-        document.getElementById("lastUpdated").innerText = "Last updated: " + time;
+let current = null;
 
-      } catch (error) {
-        document.getElementById("lastUpdated").innerText = "Error fetching data";
-      }
-    }
+function search(){
+  const val = document.getElementById("input").value.toLowerCase();
+  current = data[val] || {name:"Unknown", handle:"@"+val, followers:"N/A", following:"N/A", posts:"N/A"};
 
-    fetchPrices();
-  </script>
+  document.getElementById("result").style.display="block";
+  document.getElementById("name").innerText=current.name;
+  document.getElementById("handle").innerText=current.handle;
+  document.getElementById("followers").innerText=current.followers;
+  document.getElementById("following").innerText=current.following;
+  document.getElementById("posts").innerText=current.posts;
+}
+
+function quick(name){
+  document.getElementById("input").value=name;
+  search();
+}
+
+function save(){
+  let list = JSON.parse(localStorage.getItem("saved") || "[]");
+  list.push(current.name);
+  localStorage.setItem("saved", JSON.stringify(list));
+  renderSaved();
+}
+
+function renderSaved(){
+  let list = JSON.parse(localStorage.getItem("saved") || "[]");
+  document.getElementById("saved").innerHTML = list.map(i=>"<li>"+i+"</li>").join("");
+}
+
+renderSaved();
+</script>
 
 </body>
 </html>
